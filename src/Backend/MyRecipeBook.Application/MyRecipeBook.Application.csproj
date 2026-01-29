@@ -12,4 +12,20 @@
     <ProjectReference Include="../MyRecipeBook.Domain/MyRecipeBook.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services/" />
+    <Folder Include="Services/AutoMapper/" />
+    <Folder Include="Services/Crypto/" />
+    <Folder Include="UseCases/" />
+    <Folder Include="UseCases/User/" />
+    <Folder Include="UseCases/User/Register/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.8.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
+  </ItemGroup>
+
 </Project>

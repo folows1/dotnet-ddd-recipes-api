@@ -10,4 +10,14 @@
     <ProjectReference Include="../MyRecipeBook.Domain/MyRecipeBook.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DataAccess/" />
+    <Folder Include="DataAccess/Repos/" />
+  </ItemGroup>
+
 </Project>
