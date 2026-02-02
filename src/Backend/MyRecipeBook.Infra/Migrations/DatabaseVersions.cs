@@ -2,7 +2,7 @@ using System;
 
 namespace MyRecipeBook.Infra.Migrations;
 
-public class DatabaseVersions
+public static class DatabaseVersions
 {
-  public const int TABLE_USER = 1;
+  public const int TableUser = 1;
 }

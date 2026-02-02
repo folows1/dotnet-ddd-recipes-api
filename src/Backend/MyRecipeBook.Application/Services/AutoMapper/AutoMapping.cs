@@ -15,9 +15,4 @@ public class AutoMapping : Profile
     CreateMap<RequestRegisterUserJson, Domain.Entities.User>()
       .ForMember(dest => dest.Password, opt => opt.Ignore());
   }
-
-  private void DomainToResponse()
-  {
-    //
-  }
 }

@@ -4,19 +4,11 @@ using System.Text;
 
 namespace MyRecipeBook.Application.Services.Crypto;
 
-public class PasswordEncripter
+public class PasswordEncripter(string hashKey)
 {
-  private readonly string _hashkey;
-  public PasswordEncripter(string hashKey)
-  {
-    _hashkey = hashKey;
-  }
-
   public string Encrypt(string pwd)
   {
-    var chave = "JEIWMCKIW";
-
-    var newPwd = $"{pwd}{chave}";
+    var newPwd = $"{pwd}{hashKey}";
 
     var bytes = Encoding.UTF8.GetBytes(newPwd);
 
@@ -29,7 +21,7 @@ public class PasswordEncripter
   {
     var sb = new StringBuilder();
 
-    foreach (byte b in bytes)
+    foreach (var b in bytes)
     {
       var hex = b.ToString("x2");
       sb.Append(hex);

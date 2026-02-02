@@ -3,10 +3,11 @@ using FluentMigrator.Runner;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Enums;
+using MyRecipeBook.Domain.Extensions;
 
 namespace MyRecipeBook.Infra.Migrations;
 
-public class DatabaseMigration
+public static class DatabaseMigration
 {
   public static void Migrate(DatabaseType dbType, string connectionString, IServiceProvider provider)
   {
@@ -32,7 +33,7 @@ public class DatabaseMigration
     parameters.Add("name", databaseName);
     var records = dbConnection.Query("SELECT * FROM sys.databases WHERE name = @name", parameters);
 
-    if (records.Any() == false)
+    if (records.Any().IsFalse())
       dbConnection.Execute($"CREATE DATABASE {databaseName}");
   }
 
