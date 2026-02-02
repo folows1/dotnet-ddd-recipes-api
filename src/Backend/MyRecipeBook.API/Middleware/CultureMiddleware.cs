@@ -1,25 +1,20 @@
 using System.Globalization;
+using Dapper;
+using MyRecipeBook.Domain.Extensions;
 
 namespace MyRecipeBook.API.Middleware;
 
-public class CultureMiddleware
+public class CultureMiddleware(RequestDelegate next)
 {
-  private readonly RequestDelegate _next;
-
-  public CultureMiddleware(RequestDelegate next)
-  {
-    _next = next;
-  }
-
   public async Task Invoke(HttpContext context)
   {
-    var supportedLanguages = CultureInfo.GetCultures(CultureTypes.AllCultures);
+    var supportedLanguages = CultureInfo.GetCultures(CultureTypes.AllCultures).ToList();
 
     var requestCulture = context.Request.Headers.AcceptLanguage.FirstOrDefault();
     var culture = new CultureInfo("en");
 
-    if (string.IsNullOrWhiteSpace(requestCulture) == false
-        && supportedLanguages.Any(c => c.Name.Equals(requestCulture)))
+    if (requestCulture.NotEmpty()
+        && supportedLanguages.Exists(c => c.Name.Equals(requestCulture)))
     {
       culture = new CultureInfo(requestCulture);
     }
@@ -27,7 +22,7 @@ public class CultureMiddleware
     CultureInfo.CurrentCulture = culture;
     CultureInfo.CurrentUICulture = culture;
 
-    await _next(context);
+    await next(context);
   }
 
 }

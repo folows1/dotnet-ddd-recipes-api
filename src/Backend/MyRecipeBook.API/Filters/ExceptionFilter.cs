@@ -19,17 +19,14 @@ public class ExceptionFilter : IExceptionFilter
     }
   }
 
-  private void HandleProjectException(ExceptionContext ctx)
+  private static void HandleProjectException(ExceptionContext ctx)
   {
-    if (ctx.Exception is ErrorOnValidationException)
-    {
-      var exception = ctx.Exception as ErrorOnValidationException;
-      ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-      ctx.Result = new BadRequestObjectResult(new ResponseErrorJson(exception.ErrorMessages));
-    }
+    if (ctx.Exception is not ErrorOnValidationException exception) return;
+    ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+    ctx.Result = new BadRequestObjectResult(new ResponseErrorJson(exception.ErrorMessages));
   }
 
-  private void ThrowUnknowException(ExceptionContext ctx)
+  private static void ThrowUnknowException(ExceptionContext ctx)
   {
     ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
     ctx.Result = new ObjectResult(new ResponseErrorJson(ResourceMessagesException.NAME_EMPTY));
