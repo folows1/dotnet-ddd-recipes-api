@@ -40,7 +40,7 @@ public class RegisterUserUseCaseTest
     {
         var request = RequestRegisterUserJsonBuilder.Build();
         request.Name = string.Empty;
-        var useCase = CreateUseCase(request.Email);
+        var useCase = CreateUseCase();
 
         Func<Task> act = async () => await useCase.Execute(request);
 

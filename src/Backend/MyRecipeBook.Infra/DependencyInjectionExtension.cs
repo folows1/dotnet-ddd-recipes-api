@@ -16,7 +16,10 @@ public static class DependencyInjectionExtension
 {
   public static void AddInfra(this IServiceCollection services, IConfiguration cfg)
   {
-
+    AddRepositories(services);
+    if (cfg.IsUnitTestEnv()) 
+      return;
+    
     var dbType = cfg.DatabaseType();
 
     if (dbType == DatabaseType.MySql)
@@ -28,8 +31,6 @@ public static class DependencyInjectionExtension
       AddDbContext_SqlServer(services, cfg);
       AddFluentMigrator_SqlServer(services, cfg);
     }
-
-    AddRepositories(services);
   }
 
   private static void AddDbContext_SqlServer(IServiceCollection services, IConfiguration cfg)
