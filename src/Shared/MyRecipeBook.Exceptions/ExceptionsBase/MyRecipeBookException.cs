@@ -1,8 +1,3 @@
-using System;
-
 namespace MyRecipeBook.Exceptions.ExceptionsBase;
 
-public class MyRecipeBookException : SystemException
-{
-
-}
+public class MyRecipeBookException(string message) : SystemException(message);

@@ -3,17 +3,12 @@ using MyRecipeBook.Domain.Entities;
 
 namespace MyRecipeBook.Infra.DataAccess;
 
-public class MyRecipeBookDbContext : DbContext
+public class MyRecipeBookDbContext(DbContextOptions options) : DbContext(options)
 {
-  public MyRecipeBookDbContext(DbContextOptions options) : base(options)
-  {
+    public DbSet<User> Users { get; set; }
 
-  }
-
-  public DbSet<User> Users { get; set; }
-
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
-  {
-    modelBuilder.ApplyConfigurationsFromAssembly(typeof(MyRecipeBookDbContext).Assembly);
-  }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(MyRecipeBookDbContext).Assembly);
+    }
 }
