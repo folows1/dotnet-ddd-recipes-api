@@ -9,6 +9,7 @@
     <ItemGroup>
         <ProjectReference Include="../../src/Shared/MyRecipeBook.Communication/MyRecipeBook.Communication.csproj"/>
         <ProjectReference Include="..\..\src\Backend\MyRecipeBook.Application\MyRecipeBook.Application.csproj"/>
+        <ProjectReference Include="..\..\src\Backend\MyRecipeBook.Infra\MyRecipeBook.Infra.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

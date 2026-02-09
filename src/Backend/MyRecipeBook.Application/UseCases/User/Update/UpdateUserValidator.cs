@@ -1,0 +1,21 @@
+using FluentValidation;
+using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Extensions;
+using MyRecipeBook.Exceptions;
+
+namespace MyRecipeBook.Application.UseCases.User.Update;
+
+public class UpdateUserValidator : AbstractValidator<RequestUpdateUserJson>
+{
+    public UpdateUserValidator()
+    {
+        RuleFor(request => request.Name).NotEmpty().WithMessage(ResourceMessagesException.NAME_EMPTY);
+        RuleFor(request => request.Email).NotEmpty().WithMessage(ResourceMessagesException.NAME_EMPTY);
+
+        When(request => string.IsNullOrEmpty(request.Email).IsFalse(),
+            () =>
+            {
+                RuleFor(request => request.Email).EmailAddress().WithMessage(ResourceMessagesException.NAME_EMPTY);
+            });
+    }
+}

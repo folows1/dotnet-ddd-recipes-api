@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 using CommonTestUtils.Requests;
 using FluentAssertions;
@@ -27,6 +26,8 @@ public class RegisterUserTest(CustomWebApplicationFactory factory) : MyRecipeBoo
         var responseData = await JsonDocument.ParseAsync(responseBody);
 
         responseData.RootElement.GetProperty("name").GetString().Should().NotBeNullOrWhiteSpace().And.Be(request.Name);
+        responseData.RootElement.GetProperty("tokens").GetProperty("accessToken").GetString().Should()
+            .NotBeNullOrEmpty();
     }
 
     [Theory]
