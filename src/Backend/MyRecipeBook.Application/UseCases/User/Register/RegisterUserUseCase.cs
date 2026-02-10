@@ -1,11 +1,11 @@
 using AutoMapper;
 using FluentValidation.Results;
-using MyRecipeBook.Application.Services.Crypto;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repos;
 using MyRecipeBook.Domain.Repos.User;
+using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
@@ -18,7 +18,7 @@ public class RegisterUserUseCase(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IAccessTokenGenerator accessTokenGenerator,
-    PasswordEncripter pwdEncripter)
+    IPasswordEncripter pwdEncripter)
     : IRegisterUserUseCase
 {
     public async Task<ResponseRegisteredUserJson> Execute(RequestRegisterUserJson request)

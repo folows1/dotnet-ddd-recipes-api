@@ -9,13 +9,20 @@ using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Login.DoLogin;
 
-public class DoLoginTest(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory)
+public class DoLoginTest : MyRecipeBookClassFixture
 {
     private const string Method = "login";
 
-    private readonly string _email = factory.GetEmail();
-    private readonly string _pwd = factory.GetPassword();
-    private readonly string _name = factory.GetName();
+    private readonly string _email;
+    private readonly string _pwd;
+    private readonly string _name;
+
+    public DoLoginTest(CustomWebApplicationFactory factory) : base(factory)
+    {
+        _email = factory.GetEmail();
+        _pwd = factory.GetPassword();
+        _name = factory.GetName();
+    }
 
     [Fact]
     public async Task Success()
