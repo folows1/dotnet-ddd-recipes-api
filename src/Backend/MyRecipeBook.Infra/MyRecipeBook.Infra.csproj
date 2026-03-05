@@ -25,7 +25,6 @@
         <Folder Include="DataAccess/Repos/"/>
         <Folder Include="Extensions/"/>
         <Folder Include="Migrations/"/>
-        <Folder Include="Migrations/Versions/"/>
     </ItemGroup>
 
 </Project>

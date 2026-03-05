@@ -13,9 +13,9 @@ public class Sha512Encripter : IPasswordEncripter
         _hashKey = hashkey;
     }
 
-    public string Encrypt(string pwd)
+    public string Encrypt(string password)
     {
-        var newPwd = $"{pwd}{_hashKey}";
+        var newPwd = $"{password}{_hashKey}";
 
         var bytes = Encoding.UTF8.GetBytes(newPwd);
 
