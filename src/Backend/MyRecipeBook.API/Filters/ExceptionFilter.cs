@@ -7,7 +7,7 @@ using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.API.Filters;
 
-public class ExceptionFilter : IExceptionFilter
+public class ExceptionFilter(ILogger<ExceptionFilter> logger) : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
@@ -19,11 +19,16 @@ public class ExceptionFilter : IExceptionFilter
 
     private static void HandleProjectException(ExceptionContext ctx)
     {
-        if (ctx.Exception is InvalidLoginException)
+        switch (ctx.Exception)
         {
-            ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            ctx.Result = new UnauthorizedObjectResult(new ResponseErrorJson(ctx.Exception.Message));
-            return;
+            case InvalidLoginException:
+                ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                ctx.Result = new UnauthorizedObjectResult(new ResponseErrorJson(ctx.Exception.Message));
+                return;
+            case NotFoundException:
+                ctx.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                ctx.Result = new NotFoundObjectResult(new ResponseErrorJson(ctx.Exception.Message));
+                return;
         }
 
         if (ctx.Exception is not ErrorOnValidationException exception) return;
@@ -32,9 +37,11 @@ public class ExceptionFilter : IExceptionFilter
         ctx.Result = new BadRequestObjectResult(new ResponseErrorJson(exception.ErrorMessages));
     }
 
-    private static void ThrowUnknowException(ExceptionContext ctx)
+    private void ThrowUnknowException(ExceptionContext ctx)
     {
+        logger.LogError(ctx.Exception, "Unknown exception occurred: {Message}", ctx.Exception.Message);
+
         ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        ctx.Result = new ObjectResult(new ResponseErrorJson(ResourceMessagesException.NAME_EMPTY));
+        ctx.Result = new ObjectResult(new ResponseErrorJson("An unexpected error occurred."));
     }
 }

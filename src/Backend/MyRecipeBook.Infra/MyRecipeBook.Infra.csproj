@@ -22,7 +22,6 @@
 
     <ItemGroup>
         <Folder Include="DataAccess/"/>
-        <Folder Include="DataAccess/Repos/"/>
         <Folder Include="Extensions/"/>
         <Folder Include="Migrations/"/>
     </ItemGroup>

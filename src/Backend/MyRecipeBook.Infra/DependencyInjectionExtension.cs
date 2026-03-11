@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Enums;
 using MyRecipeBook.Domain.Repos;
+using MyRecipeBook.Domain.Repos.Recipe;
 using MyRecipeBook.Domain.Repos.User;
 using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
@@ -67,10 +68,13 @@ public static class DependencyInjectionExtension
 
     private static void AddRepositories(IServiceCollection services)
     {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddScoped<IUserWriteOnlyRepo, UserRepo>();
         services.AddScoped<IUserReadOnlyRepo, UserRepo>();
         services.AddScoped<IUserUpdateOnlyRepo, UserRepo>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IRecipeWriteOnlyRepo, RecipeRepo>();
+        services.AddScoped<IRecipeReadOnlyRepo, RecipeRepo>();
     }
 
     // private static void AddFluentMigrator_MySql(IServiceCollection services, IConfiguration cfg)

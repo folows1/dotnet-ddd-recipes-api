@@ -5,13 +5,9 @@ using FluentAssertions;
 
 namespace WebApi.Test.User.Update;
 
-public class UpdateUserInvalidTokenTest : MyRecipeBookClassFixture
+public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory)
 {
     private const string Method = "user";
-
-    public UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : base(factory)
-    {
-    }
 
     [Fact]
     public async Task Error_Token_Invalid()
