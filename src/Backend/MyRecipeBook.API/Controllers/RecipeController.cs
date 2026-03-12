@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using MyRecipeBook.API.Attributes;
 using MyRecipeBook.API.Binders;
+using MyRecipeBook.Application.UseCases.Recipe.Delete;
 using MyRecipeBook.Application.UseCases.Recipe.Filter;
 using MyRecipeBook.Application.UseCases.Recipe.GetById;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
+using MyRecipeBook.Application.UseCases.Recipe.Update;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 
@@ -41,7 +43,7 @@ public class RecipeController : MyRecipeBookBaseController
     }
 
     [HttpGet]
-    [Route("{id}")]
+    [Route("{id:long}")]
     [ProducesResponseType(typeof(ResponseRecipeJson), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBydId(
@@ -53,5 +55,34 @@ public class RecipeController : MyRecipeBookBaseController
         var response = await useCase.Execute(id);
 
         return Ok(response);
+    }
+
+    [HttpDelete]
+    [Route("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(
+        [FromServices] IDeleteRecipeUseCase useCase,
+        [FromRoute] [ModelBinder(typeof(MyRecipeBookIdBinder))]
+        long id
+    )
+    {
+        await useCase.Execute(id);
+        return NoContent();
+    }
+
+    [HttpPut]
+    [Route("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(
+        [FromServices] IUpdateRecipeUseCase useCase,
+        [FromBody] RequestRecipeJson request,
+        [FromRoute] [ModelBinder(typeof(MyRecipeBookIdBinder))]
+        long id
+    )
+    {
+        await useCase.Execute(id, request);
+        return NoContent();
     }
 }

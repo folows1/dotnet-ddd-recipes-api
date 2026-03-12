@@ -75,6 +75,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IUserUpdateOnlyRepo, UserRepo>();
         services.AddScoped<IRecipeWriteOnlyRepo, RecipeRepo>();
         services.AddScoped<IRecipeReadOnlyRepo, RecipeRepo>();
+        services.AddScoped<IRecipeUpdateOnlyRepo, RecipeRepo>();
     }
 
     // private static void AddFluentMigrator_MySql(IServiceCollection services, IConfiguration cfg)
