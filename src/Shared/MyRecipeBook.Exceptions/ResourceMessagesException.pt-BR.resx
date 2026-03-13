@@ -120,4 +120,70 @@
   <data name="NAME_EMPTY" xml:space="preserve">
     <value>O nome não pode ser vazio.</value>
   </data>
+  <data name="EMAIL_EMPTY" xml:space="preserve">
+    <value>O e-mail não pode ser vazio.</value>
+  </data>
+  <data name="EMAIL_INVALID" xml:space="preserve">
+    <value>O e-mail é inválido.</value>
+  </data>
+  <data name="EMAIL_ALREADY_REGISTERED" xml:space="preserve">
+    <value>Este e-mail já está cadastrado.</value>
+  </data>
+  <data name="PASSWORD_EMPTY" xml:space="preserve">
+    <value>A senha não pode ser vazia.</value>
+  </data>
+  <data name="PASSWORD_MINIMUM_6_CHARACTERS" xml:space="preserve">
+    <value>A senha deve ter no mínimo 6 caracteres.</value>
+  </data>
+  <data name="CURRENT_PASSWORD_INVALID" xml:space="preserve">
+    <value>A senha atual é inválida.</value>
+  </data>
+  <data name="INVALID_LOGIN" xml:space="preserve">
+    <value>E-mail ou senha inválidos.</value>
+  </data>
+  <data name="TITLE_EMPTY" xml:space="preserve">
+    <value>O título da receita não pode ser vazio.</value>
+  </data>
+  <data name="COOKING_TIME_INVALID" xml:space="preserve">
+    <value>O tempo de preparo informado é inválido.</value>
+  </data>
+  <data name="DIFFICULTY_INVALID" xml:space="preserve">
+    <value>A dificuldade informada é inválida.</value>
+  </data>
+  <data name="DISH_TYPE_INVALID" xml:space="preserve">
+    <value>O tipo de prato informado é inválido.</value>
+  </data>
+  <data name="INGREDIENTS_EMPTY" xml:space="preserve">
+    <value>A receita deve ter pelo menos um ingrediente.</value>
+  </data>
+  <data name="INGREDIENT_EMPTY" xml:space="preserve">
+    <value>O ingrediente não pode ser vazio.</value>
+  </data>
+  <data name="INSTRUCTIONS_EMPTY" xml:space="preserve">
+    <value>A receita deve ter pelo menos uma instrução.</value>
+  </data>
+  <data name="INSTRUCTION_STEP_INVALID" xml:space="preserve">
+    <value>O passo da instrução deve ser maior que zero.</value>
+  </data>
+  <data name="INSTRUCTION_TEXT_EMPTY" xml:space="preserve">
+    <value>O texto da instrução não pode ser vazio.</value>
+  </data>
+  <data name="INSTRUCTION_TEXT_MAX_LENGTH_EXCEEDED" xml:space="preserve">
+    <value>O texto da instrução não pode exceder 2000 caracteres.</value>
+  </data>
+  <data name="INSTRUCTIONS_DUPLICATED_STEP" xml:space="preserve">
+    <value>Os passos da instrução não podem estar repetidos.</value>
+  </data>
+  <data name="RECIPE_NOT_FOUND" xml:space="preserve">
+    <value>Receita não encontrada.</value>
+  </data>
+  <data name="TOKEN_MISSING" xml:space="preserve">
+    <value>O token de autenticação não foi informado.</value>
+  </data>
+  <data name="TOKEN_INVALID" xml:space="preserve">
+    <value>O token de autenticação é inválido.</value>
+  </data>
+  <data name="USER_NOT_AUTHORIZED" xml:space="preserve">
+    <value>Você não tem permissão para acessar este recurso.</value>
+  </data>
 </root>

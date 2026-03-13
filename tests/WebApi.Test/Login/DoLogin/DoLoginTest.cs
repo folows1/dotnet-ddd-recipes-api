@@ -62,7 +62,7 @@ public class DoLoginTest : MyRecipeBookClassFixture
         var errors = responseData.RootElement.GetProperty("errors").EnumerateArray();
 
         var expectedMessage =
-            ResourceMessagesException.ResourceManager.GetString("NAME_EMPTY", new CultureInfo(culture));
+            ResourceMessagesException.ResourceManager.GetString("INVALID_LOGIN", new CultureInfo(culture));
 
         errors.Should().ContainSingle().And.Contain(e => e.GetString()!.Equals(expectedMessage));
     }

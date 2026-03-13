@@ -28,7 +28,7 @@ public class DeleteRecipeUseCase : IDeleteRecipeUseCase
         var recipe = await _readOnlyRepo.GetById(loggedUser, recipeId);
 
         if (recipe is null)
-            throw new NotFoundException(ResourceMessagesException.NAME_EMPTY);
+            throw new NotFoundException(ResourceMessagesException.RECIPE_NOT_FOUND);
 
         await _repoWrite.Delete(recipeId);
         await _unitOfWork.Commit();

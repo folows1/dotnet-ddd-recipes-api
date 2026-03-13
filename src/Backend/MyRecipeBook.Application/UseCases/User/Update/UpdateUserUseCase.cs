@@ -41,7 +41,7 @@ public class UpdateUserUseCase(
             var userExist = await readOnlyRepo.ExistActiveUserWithEmail(request.Email);
             if (userExist)
                 result.Errors.Add(
-                    new FluentValidation.Results.ValidationFailure("email", ResourceMessagesException.NAME_EMPTY));
+                    new FluentValidation.Results.ValidationFailure("email", ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
         }
 
         if (result.IsValid.IsFalse())

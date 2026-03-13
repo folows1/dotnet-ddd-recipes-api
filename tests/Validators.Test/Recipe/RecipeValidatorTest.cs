@@ -32,7 +32,7 @@ public class RecipeValidatorTest
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.COOKING_TIME_INVALID));
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class RecipeValidatorTest
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.DIFFICULTY_INVALID));
     }
 
     [Theory]
@@ -65,7 +65,7 @@ public class RecipeValidatorTest
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.TITLE_EMPTY));
     }
 
     [Fact]
@@ -93,7 +93,7 @@ public class RecipeValidatorTest
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.DISH_TYPE_INVALID));
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public class RecipeValidatorTest
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.INGREDIENTS_EMPTY));
     }
 
     [Fact]
@@ -123,7 +123,7 @@ public class RecipeValidatorTest
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.INSTRUCTIONS_EMPTY));
     }
 
     [Theory]
@@ -141,7 +141,7 @@ public class RecipeValidatorTest
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.INGREDIENT_EMPTY));
     }
 
     [Theory]
@@ -159,6 +159,6 @@ public class RecipeValidatorTest
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.INSTRUCTION_TEXT_EMPTY));
     }
 }

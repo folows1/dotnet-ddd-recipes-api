@@ -32,7 +32,7 @@ public class AuthenticatedUserFilter : IAsyncAuthorizationFilter
 
             if (exist.IsFalse())
             {
-                throw new MyRecipeBookException(ResourceMessagesException.NAME_EMPTY);
+                throw new MyRecipeBookException(ResourceMessagesException.USER_NOT_AUTHORIZED);
             }
         }
         catch (MyRecipeBookException e)
@@ -48,7 +48,7 @@ public class AuthenticatedUserFilter : IAsyncAuthorizationFilter
         }
         catch
         {
-            context.Result = new UnauthorizedObjectResult(new ResponseErrorJson(ResourceMessagesException.NAME_EMPTY));
+            context.Result = new UnauthorizedObjectResult(new ResponseErrorJson(ResourceMessagesException.TOKEN_INVALID));
         }
     }
 
@@ -57,7 +57,7 @@ public class AuthenticatedUserFilter : IAsyncAuthorizationFilter
         var auth = context.HttpContext.Request.Headers.Authorization.ToString();
 
         return string.IsNullOrWhiteSpace(auth)
-            ? throw new MyRecipeBookException(ResourceMessagesException.NAME_EMPTY)
+            ? throw new MyRecipeBookException(ResourceMessagesException.TOKEN_MISSING)
             : auth["Bearer ".Length..].Trim();
     }
 }

@@ -28,7 +28,7 @@ public class FilterRecipeValidatorTest
         var result = validator.Validate(request);
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.COOKING_TIME_INVALID));
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class FilterRecipeValidatorTest
         var result = validator.Validate(request);
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.DIFFICULTY_INVALID));
     }
 
     [Fact]
@@ -56,6 +56,6 @@ public class FilterRecipeValidatorTest
         var result = validator.Validate(request);
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle().And
-            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.DISH_TYPE_INVALID));
     }
 }

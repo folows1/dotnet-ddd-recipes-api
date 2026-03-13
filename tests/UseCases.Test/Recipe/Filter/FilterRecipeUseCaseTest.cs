@@ -47,7 +47,7 @@ public class FilterRecipeUseCaseTest
         (await act.Should().ThrowAsync<ErrorOnValidationException>())
             .Where(e => e.ErrorMessages.Count == 1
                         &&
-                        e.ErrorMessages.Contains(ResourceMessagesException.NAME_EMPTY)
+                        e.ErrorMessages.Contains(ResourceMessagesException.COOKING_TIME_INVALID)
             );
     }
 

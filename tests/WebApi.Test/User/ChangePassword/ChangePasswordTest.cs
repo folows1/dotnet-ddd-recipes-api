@@ -71,7 +71,7 @@ public class ChangePasswordTest : MyRecipeBookClassFixture
         var errors = responseData.RootElement.GetProperty("errors").EnumerateArray();
 
         var expectedMessage =
-            ResourceMessagesException.ResourceManager.GetString("NAME_EMPTY", new CultureInfo(culture));
+            ResourceMessagesException.ResourceManager.GetString("PASSWORD_EMPTY", new CultureInfo(culture));
 
         errors.Should().ContainSingle().And.Contain(c => c.GetString()!.Equals(expectedMessage));
     }

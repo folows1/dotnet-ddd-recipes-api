@@ -10,13 +10,13 @@ public class PasswordValidator<T> : PropertyValidator<T, string>
     {
         if (string.IsNullOrWhiteSpace(password))
         {
-            context.MessageFormatter.AppendArgument("ErrorMessage", ResourceMessagesException.NAME_EMPTY);
+            context.MessageFormatter.AppendArgument("ErrorMessage", ResourceMessagesException.PASSWORD_EMPTY);
             return false;
         }
 
         if (password.Length >= 6) return true;
 
-        context.MessageFormatter.AppendArgument("ErrorMessage", "abc");
+        context.MessageFormatter.AppendArgument("ErrorMessage", ResourceMessagesException.PASSWORD_MINIMUM_6_CHARACTERS);
         return false;
     }
 

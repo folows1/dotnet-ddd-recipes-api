@@ -48,7 +48,7 @@ public class RegisterUserValidatorTest
 
     // FLUENT
     result.Errors.Should().ContainSingle()
-      .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+      .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.EMAIL_EMPTY));
   }
 
   [Fact]
@@ -65,7 +65,7 @@ public class RegisterUserValidatorTest
 
     // FLUENT
     result.Errors.Should().ContainSingle()
-      .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+      .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.EMAIL_INVALID));
   }
 
   [Theory]
