@@ -30,6 +30,14 @@ public class MyRecipeBookClassFixture(CustomWebApplicationFactory factory) : ICl
         return await _client.GetAsync(method);
     }
 
+    protected async Task<HttpResponseMessage> DoDelete(string method, string token = "", string culture = "en")
+    {
+        ChangeRequestCulture(culture);
+        AuthorizeRequest(token);
+
+        return await _client.DeleteAsync(method);
+    }
+
     private void ChangeRequestCulture(string culture)
     {
         if (_client.DefaultRequestHeaders.Contains("Accept-Language"))

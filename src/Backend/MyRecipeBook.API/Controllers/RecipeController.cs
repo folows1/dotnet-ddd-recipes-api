@@ -43,7 +43,7 @@ public class RecipeController : MyRecipeBookBaseController
     }
 
     [HttpGet]
-    [Route("{id:long}")]
+    [Route("{id}")]
     [ProducesResponseType(typeof(ResponseRecipeJson), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBydId(
@@ -58,7 +58,7 @@ public class RecipeController : MyRecipeBookBaseController
     }
 
     [HttpDelete]
-    [Route("{id:long}")]
+    [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(
@@ -72,7 +72,7 @@ public class RecipeController : MyRecipeBookBaseController
     }
 
     [HttpPut]
-    [Route("{id:long}")]
+    [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(

@@ -65,6 +65,18 @@ public class RecipeRepo(MyRecipeBookDbContext dbContext)
             .FirstOrDefaultAsync(recipe => recipe.Active && recipe.Id == recipeId && recipe.UserId == user.Id);
     }
 
+    public async Task<IList<Recipe>> GetForDashboard(User user)
+    {
+        return await dbContext
+            .Recipes
+            .AsNoTracking()
+            .Include(r => r.Ingredients)
+            .Where(r => r.Active && r.UserId == user.Id)
+            .OrderByDescending(r => r.CreatedOn)
+            .Take(5)
+            .ToListAsync();
+    }
+
     async Task<Recipe?> IRecipeUpdateOnlyRepo.GetById(User user, long recipeId)
     {
         return await GetFullRecipe()

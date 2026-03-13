@@ -49,7 +49,7 @@ public class RegisterRecipeUseCaseTest
         var mapper = MapperBuilder.Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var loggedUser = LoggedUserBuilder.Build(user);
-        var repo = RegisterWriteOnlyRepoBuilder.Build();
+        var repo = RecipeWriteOnlyRepoBuilder.Build();
 
         return new RegisterRecipeUseCase(repo, loggedUser, unitOfWork, mapper);
     }

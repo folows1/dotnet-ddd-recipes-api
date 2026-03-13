@@ -3,7 +3,7 @@ using MyRecipeBook.Domain.Repos.Recipe;
 
 namespace CommonTestUtils.Repos;
 
-public class RegisterWriteOnlyRepoBuilder
+public class RecipeWriteOnlyRepoBuilder
 {
     public static IRecipeWriteOnlyRepo Build()
     {
