@@ -64,7 +64,7 @@ public class RegisterUserUseCase(
 
         if (emailExist)
         {
-            result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.NAME_EMPTY));
+            result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
         }
 
         if (result.IsValid.IsFalse())

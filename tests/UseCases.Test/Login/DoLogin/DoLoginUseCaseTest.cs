@@ -40,7 +40,7 @@ public class DoLoginUseCaseTest
         var act = async () => { await useCase.Execute(request); };
 
         await act.Should().ThrowAsync<InvalidLoginException>()
-            .Where(e => e.Message.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Where(e => e.Message.Equals(ResourceMessagesException.INVALID_LOGIN));
     }
 
     private static DoLoginUseCase CreateUseCase(MyRecipeBook.Domain.Entities.User? user = null)

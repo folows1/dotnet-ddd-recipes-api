@@ -24,7 +24,7 @@ public class UpdateRecipeUseCase(
         var recipe = await repo.GetById(loggedUser, recipeId);
 
         if (recipe is null)
-            throw new NotFoundException(ResourceMessagesException.NAME_EMPTY);
+            throw new NotFoundException(ResourceMessagesException.RECIPE_NOT_FOUND);
 
         recipe.Ingredients.Clear();
         recipe.Instructions.Clear();

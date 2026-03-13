@@ -38,7 +38,7 @@ public class UpdateRecipeUseCaseTest
         var act = async () => await useCase.Execute(recipeId: 1000, request);
 
         (await act.Should().ThrowAsync<NotFoundException>())
-            .Where(e => e.Message == ResourceMessagesException.NAME_EMPTY);
+            .Where(e => e.Message == ResourceMessagesException.RECIPE_NOT_FOUND);
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public class UpdateRecipeUseCaseTest
         (await act.Should().ThrowAsync<ErrorOnValidationException>())
             .Where(e => e.ErrorMessages.Count == 1
                         &&
-                        e.ErrorMessages.Contains(ResourceMessagesException.NAME_EMPTY)
+                        e.ErrorMessages.Contains(ResourceMessagesException.TITLE_EMPTY)
             );
     }
 

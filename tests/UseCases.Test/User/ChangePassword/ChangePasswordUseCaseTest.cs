@@ -48,7 +48,7 @@ public class ChangePasswordUseCaseTest
         var action = async () => await useCase.Execute(request);
 
         (await action.Should().ThrowAsync<ErrorOnValidationException>())
-            .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.NAME_EMPTY));
+            .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.PASSWORD_EMPTY));
 
         var passwordEncripter = PasswordEncripterBuilder.Build();
 
@@ -67,7 +67,7 @@ public class ChangePasswordUseCaseTest
         var action = async () => await useCase.Execute(request);
 
         (await action.Should().ThrowAsync<ErrorOnValidationException>())
-            .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.NAME_EMPTY));
+            .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.CURRENT_PASSWORD_INVALID));
 
         var passwordEncripter = PasswordEncripterBuilder.Build();
 

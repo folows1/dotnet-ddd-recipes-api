@@ -118,6 +118,72 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NAME_EMPTY" xml:space="preserve">
-    <value>The name cannot be empty?</value>
+    <value>The name cannot be empty.</value>
+  </data>
+  <data name="EMAIL_EMPTY" xml:space="preserve">
+    <value>The email cannot be empty.</value>
+  </data>
+  <data name="EMAIL_INVALID" xml:space="preserve">
+    <value>The email is invalid.</value>
+  </data>
+  <data name="EMAIL_ALREADY_REGISTERED" xml:space="preserve">
+    <value>This email is already registered.</value>
+  </data>
+  <data name="PASSWORD_EMPTY" xml:space="preserve">
+    <value>The password cannot be empty.</value>
+  </data>
+  <data name="PASSWORD_MINIMUM_6_CHARACTERS" xml:space="preserve">
+    <value>The password must be at least 6 characters long.</value>
+  </data>
+  <data name="CURRENT_PASSWORD_INVALID" xml:space="preserve">
+    <value>The current password is invalid.</value>
+  </data>
+  <data name="INVALID_LOGIN" xml:space="preserve">
+    <value>Invalid email or password.</value>
+  </data>
+  <data name="TITLE_EMPTY" xml:space="preserve">
+    <value>The recipe title cannot be empty.</value>
+  </data>
+  <data name="COOKING_TIME_INVALID" xml:space="preserve">
+    <value>The informed cooking time is invalid.</value>
+  </data>
+  <data name="DIFFICULTY_INVALID" xml:space="preserve">
+    <value>The informed difficulty is invalid.</value>
+  </data>
+  <data name="DISH_TYPE_INVALID" xml:space="preserve">
+    <value>The informed dish type is invalid.</value>
+  </data>
+  <data name="INGREDIENTS_EMPTY" xml:space="preserve">
+    <value>The recipe must have at least one ingredient.</value>
+  </data>
+  <data name="INGREDIENT_EMPTY" xml:space="preserve">
+    <value>The ingredient cannot be empty.</value>
+  </data>
+  <data name="INSTRUCTIONS_EMPTY" xml:space="preserve">
+    <value>The recipe must have at least one instruction.</value>
+  </data>
+  <data name="INSTRUCTION_STEP_INVALID" xml:space="preserve">
+    <value>The instruction step must be greater than zero.</value>
+  </data>
+  <data name="INSTRUCTION_TEXT_EMPTY" xml:space="preserve">
+    <value>The instruction text cannot be empty.</value>
+  </data>
+  <data name="INSTRUCTION_TEXT_MAX_LENGTH_EXCEEDED" xml:space="preserve">
+    <value>The instruction text cannot exceed 2000 characters.</value>
+  </data>
+  <data name="INSTRUCTIONS_DUPLICATED_STEP" xml:space="preserve">
+    <value>Instruction steps cannot be duplicated.</value>
+  </data>
+  <data name="RECIPE_NOT_FOUND" xml:space="preserve">
+    <value>Recipe not found.</value>
+  </data>
+  <data name="TOKEN_MISSING" xml:space="preserve">
+    <value>Authentication token was not provided.</value>
+  </data>
+  <data name="TOKEN_INVALID" xml:space="preserve">
+    <value>Authentication token is invalid.</value>
+  </data>
+  <data name="USER_NOT_AUTHORIZED" xml:space="preserve">
+    <value>You do not have permission to access this resource.</value>
   </data>
 </root>

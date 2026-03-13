@@ -49,7 +49,7 @@ public class DeleteRecipeTest : MyRecipeBookClassFixture
         var errors = responseData.RootElement.GetProperty("errors").EnumerateArray();
 
         var expectedMessage =
-            ResourceMessagesException.ResourceManager.GetString("NAME_EMPTY", new CultureInfo(culture));
+            ResourceMessagesException.ResourceManager.GetString("RECIPE_NOT_FOUND", new CultureInfo(culture));
 
         errors.Should().HaveCount(1).And.Contain(c => c.GetString()!.Equals(expectedMessage));
     }

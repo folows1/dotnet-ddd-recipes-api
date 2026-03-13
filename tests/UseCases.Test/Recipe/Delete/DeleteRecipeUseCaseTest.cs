@@ -31,7 +31,7 @@ public class DeleteRecipeUseCaseTest
         var act = async () => await useCase.Execute(recipeId: 1000);
 
         (await act.Should().ThrowAsync<NotFoundException>())
-            .Where(e => e.Message.Equals(ResourceMessagesException.NAME_EMPTY));
+            .Where(e => e.Message.Equals(ResourceMessagesException.RECIPE_NOT_FOUND));
     }
 
     private static DeleteRecipeUseCase CreateUseCase(

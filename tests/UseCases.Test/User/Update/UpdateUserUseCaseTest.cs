@@ -57,7 +57,7 @@ public class UpdateUserUseCaseTest
         var act = async () => await useCase.Execute(request);
 
         (await act.Should().ThrowAsync<ErrorOnValidationException>())
-            .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.NAME_EMPTY));
+            .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
 
         user.Name.Should().NotBe(request.Name);
         user.Email.Should().NotBe(request.Email);

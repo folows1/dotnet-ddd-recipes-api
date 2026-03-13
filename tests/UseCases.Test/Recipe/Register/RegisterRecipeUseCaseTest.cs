@@ -40,7 +40,7 @@ public class RegisterRecipeUseCaseTest
         (await act.Should().ThrowAsync<ErrorOnValidationException>())
             .Where(e => e.ErrorMessages.Count == 1
                         &&
-                        e.ErrorMessages.Contains(ResourceMessagesException.NAME_EMPTY)
+                        e.ErrorMessages.Contains(ResourceMessagesException.TITLE_EMPTY)
             );
     }
 

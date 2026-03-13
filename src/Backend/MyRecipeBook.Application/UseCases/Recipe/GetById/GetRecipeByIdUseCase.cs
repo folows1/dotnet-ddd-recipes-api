@@ -27,7 +27,7 @@ public class GetRecipeByIdUseCase : IGetRecipeByIdUseCase
         var recipe = await _repo.GetById(loggedUser, recipeId);
 
         return recipe is null
-            ? throw new NotFoundException(ResourceMessagesException.NAME_EMPTY)
+            ? throw new NotFoundException(ResourceMessagesException.RECIPE_NOT_FOUND)
             : _mapper.Map<ResponseRecipeJson>(recipe);
     }
 }

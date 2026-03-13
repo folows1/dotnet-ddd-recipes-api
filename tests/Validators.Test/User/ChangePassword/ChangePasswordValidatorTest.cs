@@ -32,7 +32,7 @@ public class ChangePasswordValidatorTest
         result.IsValid.Should().BeFalse();
 
         result.Errors.Should().ContainSingle()
-            .And.Contain(e => e.ErrorMessage.Equals("abc"));
+            .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.PASSWORD_MINIMUM_6_CHARACTERS));
     }
 
     [Fact]
@@ -45,6 +45,6 @@ public class ChangePasswordValidatorTest
         result.IsValid.Should().BeFalse();
 
         result.Errors.Should().ContainSingle()
-            .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
+            .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.PASSWORD_EMPTY));
     }
 }

@@ -48,7 +48,7 @@ public class ChangePasswordUseCase : IChangePasswordUseCase
 
         if (currentPassword.Equals(loggedUser.Password).IsFalse())
             result.Errors.Add(
-                new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.NAME_EMPTY));
+                new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.CURRENT_PASSWORD_INVALID));
 
         if (result.IsValid.IsFalse())
             throw new ErrorOnValidationException(result.Errors.Select(e => e.ErrorMessage).ToList());
