@@ -193,3 +193,5 @@ FakesAssemblies/
 
 /.sonarqube
 coverage.opencover.xml
+
+src/Backend/MyRecipeBook.Infra/Migrations/Versions/Version0000003.cs
