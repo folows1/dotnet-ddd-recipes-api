@@ -1,8 +1,11 @@
+using System.Globalization;
 using System.Net;
 using System.Text.Json;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Tokens;
 using FluentAssertions;
+using MyRecipeBook.Exceptions;
+using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Recipe.Register;
 
@@ -22,7 +25,7 @@ public class RegisterRecipeTest : MyRecipeBookClassFixture
         var request = RequestRecipeJsonBuilder.Build();
         var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
 
-        var response = await DoPost(Method, request, token: token);
+        var response = await DoPostFormData(Method, request, token: token);
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 

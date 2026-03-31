@@ -1,3 +1,4 @@
+using CommonTestUtils.BlobStorage;
 using CommonTestUtils.Crypto;
 using CommonTestUtils.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     services.Remove(descriptor);
 
                 var provider = services.AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
+
+                var blobStorage = new BlobStorageServiceBuilder().Build();
+                services.AddScoped(_ => blobStorage);
 
                 services.AddDbContext<MyRecipeBookDbContext>(options =>
                 {

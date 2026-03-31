@@ -1,3 +1,4 @@
+using CommonTestUtils.BlobStorage;
 using CommonTestUtils.Entities;
 using CommonTestUtils.LoggedUser;
 using CommonTestUtils.Mapper;
@@ -46,7 +47,8 @@ public class GetRecipeByIdUseCaseTest
         var mapper = MapperBuilder.Build();
         var loggedUser = LoggedUserBuilder.Build(user);
         var repo = new RecipeReadOnlyRepoBuilder().GetById(user, recipe).Build();
+        var blobStorage = new BlobStorageServiceBuilder().GetImageUrl(user, recipe?.ImageIdentifier).Build();
 
-        return new GetRecipeByIdUseCase(mapper, loggedUser, repo);
+        return new GetRecipeByIdUseCase(mapper, loggedUser, repo, blobStorage);
     }
 }

@@ -1,12 +1,15 @@
+using CommonTestUtils.BlobStorage;
 using CommonTestUtils.Entities;
 using CommonTestUtils.LoggedUser;
 using CommonTestUtils.Mapper;
 using CommonTestUtils.Repos;
 using CommonTestUtils.Requests;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
+using UseCases.Test.InlineDatas;
 
 namespace UseCases.Test.Recipe.Register;
 
@@ -16,7 +19,22 @@ public class RegisterRecipeUseCaseTest
     public async Task Success()
     {
         var (user, _) = UserBuilder.Build();
-        var request = RequestRecipeJsonBuilder.Build();
+        var request = RequestRegisterRecipeFormDataBuilder.Build();
+
+        var useCase = CreateUseCase(user);
+        var result = await useCase.Execute(request);
+
+        result.Should().NotBeNull();
+        result.Id.Should().NotBeNullOrWhiteSpace();
+        result.Title.Should().Be(request.Title);
+    }
+
+    [Theory]
+    [ClassData(typeof(ImageTypesInlineData))]
+    public async Task Success_With_Image(IFormFile file)
+    {
+        var (user, _) = UserBuilder.Build();
+        var request = RequestRegisterRecipeFormDataBuilder.Build(file);
 
         var useCase = CreateUseCase(user);
         var result = await useCase.Execute(request);
@@ -30,7 +48,7 @@ public class RegisterRecipeUseCaseTest
     public async Task Error_Title_Empty()
     {
         var (user, _) = UserBuilder.Build();
-        var request = RequestRecipeJsonBuilder.Build();
+        var request = RequestRegisterRecipeFormDataBuilder.Build();
         request.Title = string.Empty;
 
         var useCase = CreateUseCase(user);
@@ -50,7 +68,8 @@ public class RegisterRecipeUseCaseTest
         var unitOfWork = UnitOfWorkBuilder.Build();
         var loggedUser = LoggedUserBuilder.Build(user);
         var repo = RecipeWriteOnlyRepoBuilder.Build();
+        var blobStorage = new BlobStorageServiceBuilder().Build();
 
-        return new RegisterRecipeUseCase(repo, loggedUser, unitOfWork, mapper);
+        return new RegisterRecipeUseCase(repo, loggedUser, unitOfWork, mapper, blobStorage);
     }
 }

@@ -4,7 +4,8 @@ using MyRecipeBook.Domain.Repos.User;
 
 namespace MyRecipeBook.Infra.DataAccess.Repos;
 
-public class UserRepo(MyRecipeBookDbContext dbCtx) : IUserReadOnlyRepo, IUserWriteOnlyRepo, IUserUpdateOnlyRepo
+public class UserRepo(MyRecipeBookDbContext dbCtx) : IUserReadOnlyRepo, IUserWriteOnlyRepo, IUserUpdateOnlyRepo,
+    IUserDeleteOnlyRepo
 {
     public async Task<bool> ExistActiveUserWithEmail(string email)
     {
@@ -38,5 +39,15 @@ public class UserRepo(MyRecipeBookDbContext dbCtx) : IUserReadOnlyRepo, IUserWri
     public void Update(User user)
     {
         dbCtx.Users.Update(user);
+    }
+
+    public async Task DeleteAccount(Guid userIdentifier)
+    {
+        var user = await dbCtx.Users.FirstOrDefaultAsync(u => u.UserIdentifier == userIdentifier);
+        if (user is null) return;
+        var recipes = dbCtx.Recipes.Where(recipe => recipe.UserId == user.Id);
+
+        dbCtx.Recipes.RemoveRange(recipes);
+        dbCtx.Users.Remove(user);
     }
 }

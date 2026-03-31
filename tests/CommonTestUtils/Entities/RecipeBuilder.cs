@@ -5,7 +5,7 @@ using DishType = MyRecipeBook.Domain.Entities.DishType;
 
 namespace CommonTestUtils.Entities;
 
-public class RecipeBuilder
+public static class RecipeBuilder
 {
     public static IList<Recipe> Collection(User user, uint count = 2)
     {
@@ -34,6 +34,7 @@ public class RecipeBuilder
             .RuleFor(r => r.Title, f => f.Lorem.Word())
             .RuleFor(r => r.CookingTime, f => f.PickRandom<CookingTime>())
             .RuleFor(r => r.Difficulty, f => f.PickRandom<Difficulty>())
+            .RuleFor(r => r.ImageIdentifier, _ => $"{Guid.NewGuid()}.png")
             .RuleFor(r => r.Ingredients, (f) => f.Make(1, () => new Ingredient
             {
                 Id = 1,

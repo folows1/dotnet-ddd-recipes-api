@@ -1,3 +1,4 @@
+using CommonTestUtils.BlobStorage;
 using CommonTestUtils.Entities;
 using CommonTestUtils.LoggedUser;
 using CommonTestUtils.Mapper;
@@ -27,6 +28,7 @@ public class GetDashboardUseCaseTest
                 r.Id.Should().NotBeNullOrWhiteSpace();
                 r.Title.Should().NotBeNullOrWhiteSpace();
                 r.AmountIngredients.Should().BeGreaterThan(0);
+                r.ImageUrl.Should().NotBeNullOrWhiteSpace();
             });
     }
 
@@ -38,7 +40,8 @@ public class GetDashboardUseCaseTest
         var mapper = MapperBuilder.Build();
         var loggedUser = LoggedUserBuilder.Build(user);
         var repo = new RecipeReadOnlyRepoBuilder().GetForDashboard(user, recipes).Build();
+        var blobStorage = new BlobStorageServiceBuilder().GetImageUrl(user, recipes).Build();
 
-        return new GetDashboardUseCase(repo, mapper, loggedUser);
+        return new GetDashboardUseCase(repo, mapper, loggedUser, blobStorage);
     }
 }

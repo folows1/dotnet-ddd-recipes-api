@@ -11,4 +11,5 @@ public class Recipe : EntityBase
     public CookingTime? CookingTime { get; set; }
     public Difficulty? Difficulty { get; set; }
     public long UserId { get; set; }
+    public string? ImageIdentifier { get; set; }
 }

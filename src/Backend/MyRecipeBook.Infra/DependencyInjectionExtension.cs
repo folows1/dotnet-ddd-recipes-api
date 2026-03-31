@@ -1,15 +1,22 @@
 using System.Reflection;
+using Azure.Messaging.ServiceBus;
+using Azure.Storage.Blobs;
 using FluentMigrator.Runner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Enums;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repos;
 using MyRecipeBook.Domain.Repos.Recipe;
 using MyRecipeBook.Domain.Repos.User;
 using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Domain.Services;
+using MyRecipeBook.Domain.Services.OpenAI;
+using MyRecipeBook.Domain.Services.ServiceBus;
+using MyRecipeBook.Domain.Services.Storage;
+using MyRecipeBook.Domain.ValueObjects;
 using MyRecipeBook.Infra.DataAccess;
 using MyRecipeBook.Infra.DataAccess.Repos;
 using MyRecipeBook.Infra.Extensions;
@@ -17,6 +24,10 @@ using MyRecipeBook.Infra.Security.Crypto;
 using MyRecipeBook.Infra.Security.Tokens.Access.Generator;
 using MyRecipeBook.Infra.Security.Tokens.Access.Validator;
 using MyRecipeBook.Infra.Services;
+using MyRecipeBook.Infra.Services.OpenAI;
+using MyRecipeBook.Infra.Services.ServiceBus;
+using MyRecipeBook.Infra.Services.Storage;
+using OpenAI.Chat;
 
 namespace MyRecipeBook.Infra;
 
@@ -24,10 +35,13 @@ public static class DependencyInjectionExtension
 {
     public static void AddInfra(this IServiceCollection services, IConfiguration cfg)
     {
-        AddRepositories(services);
-        AddTokens(services, cfg);
-        AddLoggedUser(services);
         AddPwdEncripter(services, cfg);
+        AddRepositories(services);
+        AddLoggedUser(services);
+        AddTokens(services, cfg);
+        AddOpenAi(services, cfg);
+        AddAzureStorage(services, cfg);
+        AddQueueAndProcessor(services, cfg);
 
         if (cfg.IsUnitTestEnv())
             return;
@@ -73,23 +87,11 @@ public static class DependencyInjectionExtension
         services.AddScoped<IUserWriteOnlyRepo, UserRepo>();
         services.AddScoped<IUserReadOnlyRepo, UserRepo>();
         services.AddScoped<IUserUpdateOnlyRepo, UserRepo>();
+        services.AddScoped<IUserDeleteOnlyRepo, UserRepo>();
         services.AddScoped<IRecipeWriteOnlyRepo, RecipeRepo>();
         services.AddScoped<IRecipeReadOnlyRepo, RecipeRepo>();
         services.AddScoped<IRecipeUpdateOnlyRepo, RecipeRepo>();
     }
-
-    // private static void AddFluentMigrator_MySql(IServiceCollection services, IConfiguration cfg)
-    // {
-    //   var connectionString = cfg.ConnectionString();
-
-    //   services.AddFluentMigratorCore().ConfigureRunner(options =>
-    //   {
-    //     options
-    //       .AddMySql5()
-    //       .WithGlobalConnectionString(connectionString)
-    //       .ScanIn(Assembly.Load("MyRecipeBook.Infra")).For.All();
-    //   });
-    // }
 
     private static void AddFluentMigrator_SqlServer(IServiceCollection services, IConfiguration cfg)
     {
@@ -123,5 +125,44 @@ public static class DependencyInjectionExtension
         var key = cfg.GetValue<string>("Settings:Password:AdditionalKey");
 
         services.AddScoped<IPasswordEncripter>(_ => new Sha512Encripter(key!));
+    }
+
+    private static void AddOpenAi(IServiceCollection svc, IConfiguration cfg)
+    {
+        svc.AddScoped<IGenerateRecipeAI, ChatGptService>();
+
+        var key = cfg.GetValue<string>("Settings:OpenAI:ApiKey");
+
+        svc.AddScoped(_ => new ChatClient(MyRecipeBookRuleConstants.ChatModel, key!));
+    }
+
+    private static void AddAzureStorage(IServiceCollection services, IConfiguration cfg)
+    {
+        var connectionString = cfg.GetValue<string>("Settings:BlobStorage:Azure");
+
+        if (connectionString.NotEmpty())
+            services.AddScoped<IBlobStorageService>(_ =>
+                new AzureStorageService(new BlobServiceClient(connectionString)));
+    }
+
+    private static void AddQueueAndProcessor(IServiceCollection services, IConfiguration cfg)
+    {
+        var connectionString = cfg.GetValue<string>("Settings:ServiceBus:DeleteUser");
+
+        var client = new ServiceBusClient(connectionString!, new ServiceBusClientOptions
+        {
+            TransportType = ServiceBusTransportType.AmqpWebSockets
+        });
+
+        var deleteQueue = new DeleteUserQueue(client.CreateSender("user"));
+
+        var deleteUserProcessor = new DeleteUserProcessor(client.CreateProcessor("user", new
+            ServiceBusProcessorOptions
+            {
+                MaxConcurrentCalls = 1,
+            }));
+
+        services.AddSingleton(deleteUserProcessor);
+        services.AddScoped<IDeleteUserQueue>(_ => deleteQueue);
     }
 }
