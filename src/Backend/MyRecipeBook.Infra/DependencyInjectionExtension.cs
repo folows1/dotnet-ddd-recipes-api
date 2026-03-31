@@ -149,6 +149,8 @@ public static class DependencyInjectionExtension
     {
         var connectionString = cfg.GetValue<string>("Settings:ServiceBus:DeleteUser");
 
+        if (connectionString.NotEmpty().IsFalse()) return;
+
         var client = new ServiceBusClient(connectionString!, new ServiceBusClientOptions
         {
             TransportType = ServiceBusTransportType.AmqpWebSockets
