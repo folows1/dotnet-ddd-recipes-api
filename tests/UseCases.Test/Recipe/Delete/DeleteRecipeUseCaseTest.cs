@@ -5,6 +5,7 @@ using CommonTestUtils.Repos;
 using FluentAssertions;
 using MyRecipeBook.Application.UseCases.Recipe.Delete;
 using MyRecipeBook.Exceptions;
+using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace UseCases.Test.Recipe.Delete;
 

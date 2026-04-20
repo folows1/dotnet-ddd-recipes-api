@@ -2,7 +2,7 @@ using System.Net;
 
 namespace MyRecipeBook.Exceptions.ExceptionsBase;
 
-public class InvalidLoginException() : MyRecipeBookException(ResourceMessagesException.INVALID_LOGIN)
+public class UnauthorizedException(string message) : MyRecipeBookException(message)
 {
     public override IList<string> GetErrorMessages() => [Message];
 

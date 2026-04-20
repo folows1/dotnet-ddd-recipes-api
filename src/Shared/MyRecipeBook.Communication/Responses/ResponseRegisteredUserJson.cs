@@ -3,5 +3,5 @@ namespace MyRecipeBook.Communication.Responses;
 public class ResponseRegisteredUserJson
 {
     public string Name { get; set; } = string.Empty;
-    public ResponseTokenJson Tokens { get; set; } = default!;
+    public ResponseTokensJson Tokens { get; set; } = null!;
 }

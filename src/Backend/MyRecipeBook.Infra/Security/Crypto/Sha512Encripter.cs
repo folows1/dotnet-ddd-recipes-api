@@ -4,24 +4,22 @@ using MyRecipeBook.Domain.Security.Cryptography;
 
 namespace MyRecipeBook.Infra.Security.Crypto;
 
-public class Sha512Encripter : IPasswordEncripter
+public class Sha512Encripter(string hashkey) : IPasswordEncripter
 {
-    private readonly string _hashKey;
-
-    public Sha512Encripter(string hashkey)
-    {
-        _hashKey = hashkey;
-    }
-
     public string Encrypt(string password)
     {
-        var newPwd = $"{password}{_hashKey}";
+        var newPwd = $"{password}{hashkey}";
 
         var bytes = Encoding.UTF8.GetBytes(newPwd);
 
         var hashBytes = SHA512.HashData(bytes);
 
         return StringBytes(hashBytes);
+    }
+
+    public bool IsValid(string password, string passwordHash)
+    {
+        throw new NotImplementedException();
     }
 
     private static string StringBytes(byte[] bytes)

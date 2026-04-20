@@ -6,6 +6,7 @@ using MyRecipeBook.Domain.Repos.Recipe;
 using MyRecipeBook.Domain.Services;
 using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Exceptions;
+using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.Application.UseCases.Recipe.GetById;
 

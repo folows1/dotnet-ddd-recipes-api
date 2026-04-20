@@ -4,6 +4,7 @@ using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repos;
+using MyRecipeBook.Domain.Repos.RefreshToken;
 using MyRecipeBook.Domain.Repos.User;
 using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
@@ -18,6 +19,8 @@ public class RegisterUserUseCase(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IAccessTokenGenerator accessTokenGenerator,
+    IRefreshTokenGenerator refreshTokenGenerator,
+    ITokenRepo tokenRepo,
     IPasswordEncripter pwdEncripter)
     : IRegisterUserUseCase
 {
@@ -44,14 +47,31 @@ public class RegisterUserUseCase(
 
         await unitOfWork.Commit();
 
+        var refreshToken = await CreateAndSaveRefreshToken(user);
+
         return new ResponseRegisteredUserJson
         {
-            Tokens = new ResponseTokenJson
+            Name = user.Name,
+            Tokens = new ResponseTokensJson
             {
+                RefreshToken = refreshToken,
                 AccessToken = accessTokenGenerator.Generate(user.UserIdentifier),
             },
-            Name = user.Name,
         };
+    }
+
+    private async Task<string> CreateAndSaveRefreshToken(Domain.Entities.User user)
+    {
+        var refreshToken = new Domain.Entities.RefreshToken
+        {
+            Value = refreshTokenGenerator.Generate(),
+            UserId = user.Id
+        };
+
+        await tokenRepo.SaveNewRefreshToken(refreshToken);
+        await unitOfWork.Commit();
+
+        return refreshToken.Value;
     }
 
     private async Task Validate(RequestRegisterUserJson request)

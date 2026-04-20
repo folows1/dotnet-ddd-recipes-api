@@ -18,9 +18,9 @@ public class UserReadOnlyRepoBuilder
         _repo.Setup(repo => repo.ExistActiveUserWithEmail(email)).ReturnsAsync(true);
     }
 
-    public void GetByEmailAndPassword(User user)
+    public void GetByEmail(User user)
     {
-        _repo.Setup(repo => repo.GetByEmailAndPassword(user.Email, user.Password)).ReturnsAsync(user);
+        _repo.Setup(repo => repo.GetByEmail(user.Email)).ReturnsAsync(user);
     }
 
     public IUserReadOnlyRepo Build()

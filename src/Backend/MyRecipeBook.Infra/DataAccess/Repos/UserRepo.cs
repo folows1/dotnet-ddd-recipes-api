@@ -26,6 +26,13 @@ public class UserRepo(MyRecipeBookDbContext dbCtx) : IUserReadOnlyRepo, IUserWri
             );
     }
 
+    public async Task<User?> GetByEmail(string email)
+    {
+        return await dbCtx.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Active && u.Email.Equals(email));
+    }
+
     public async Task Add(User user)
     {
         await dbCtx.Users.AddAsync(user);

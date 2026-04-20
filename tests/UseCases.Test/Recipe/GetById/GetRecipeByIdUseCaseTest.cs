@@ -6,6 +6,7 @@ using CommonTestUtils.Repos;
 using FluentAssertions;
 using MyRecipeBook.Application.UseCases.Recipe.GetById;
 using MyRecipeBook.Exceptions;
+using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace UseCases.Test.Recipe.GetById;
 

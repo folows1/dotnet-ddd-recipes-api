@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using MyRecipeBook.API.BackgroundServices;
 using MyRecipeBook.API.Converters;
@@ -8,6 +11,7 @@ using MyRecipeBook.Application;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Infra;
+using MyRecipeBook.Infra.DataAccess;
 using MyRecipeBook.Infra.Extensions;
 using MyRecipeBook.Infra.Migrations;
 
@@ -67,9 +71,22 @@ builder.Services.AddHttpContextAccessor();
 if (builder.Configuration.IsUnitTestEnv().IsFalse())
 {
     builder.Services.AddHostedService<DeleteUserService>();
+    AddGoogleAuth();
 }
 
+builder.Services.AddHealthChecks().AddDbContextCheck<MyRecipeBookDbContext>();
+
 var app = builder.Build();
+
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    AllowCachingResponses = false,
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
+    }
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -100,6 +117,23 @@ void MigrateDatabase()
     var dbType = builder.Configuration.DatabaseType();
     var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
     DatabaseMigration.Migrate(dbType, connectionString, serviceScope.ServiceProvider);
+}
+
+void AddGoogleAuth()
+{
+    var clientId = builder.Configuration.GetValue<string>("Settings:Google:ClientId")!;
+    var clientSecret = builder.Configuration.GetValue<string>("Settings:Google:ClientSecret")!;
+
+    builder.Services.AddAuthentication(config =>
+        {
+            config.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        })
+        .AddCookie()
+        .AddGoogle(gOptions =>
+        {
+            gOptions.ClientId = clientId;
+            gOptions.ClientSecret = clientSecret;
+        });
 }
 
 public partial class Program

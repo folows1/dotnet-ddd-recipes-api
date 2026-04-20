@@ -4,9 +4,12 @@ using CommonTestUtils.Repos;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Tokens;
 using FluentAssertions;
+using Moq;
 using MyRecipeBook.Application.UseCases.User.Register;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
+using MyRecipeBook.Domain.Repos.RefreshToken;
+using MyRecipeBook.Infra.Security.Tokens.Refresh;
 
 namespace UseCases.Test.User.Register;
 
@@ -35,7 +38,8 @@ public class RegisterUserUseCaseTest
         Func<Task> act = async () => await useCase.Execute(request);
 
         (await act.Should().ThrowAsync<ErrorOnValidationException>())
-            .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
+            .Where(e => e.GetErrorMessages().Count == 1 && e.GetErrorMessages().Contains(ResourceMessagesException
+                .EMAIL_ALREADY_REGISTERED));
     }
 
     [Fact]
@@ -48,7 +52,8 @@ public class RegisterUserUseCaseTest
         Func<Task> act = async () => await useCase.Execute(request);
 
         (await act.Should().ThrowAsync<ErrorOnValidationException>())
-            .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.NAME_EMPTY));
+            .Where(e => e.GetErrorMessages().Count == 1 &&
+                        e.GetErrorMessages().Contains(ResourceMessagesException.NAME_EMPTY));
     }
 
     private static RegisterUserUseCase CreateUseCase(string? email = null)
@@ -59,12 +64,23 @@ public class RegisterUserUseCaseTest
         var unitOfWork = UnitOfWorkBuilder.Build();
         var readOnlyRepoBuilder = new UserReadOnlyRepoBuilder();
         var accessTokenGen = JwtTokenGeneratorBuilder.Build();
+        var refreshTokenGen = new RefreshTokenGenerator();
+        var tokenRepo = new Mock<ITokenRepo>();
+        tokenRepo.Setup(repo => repo.SaveNewRefreshToken(It.IsAny<MyRecipeBook.Domain.Entities.RefreshToken>()))
+            .Returns(Task.CompletedTask);
 
 
         if (!string.IsNullOrEmpty(email))
             readOnlyRepoBuilder.ExistsActiveUserWithEmail(email);
 
-        return new RegisterUserUseCase(writeOnlyRepo, readOnlyRepoBuilder.Build(), unitOfWork, mapper, accessTokenGen,
+        return new RegisterUserUseCase(
+            writeOnlyRepo,
+            readOnlyRepoBuilder.Build(),
+            unitOfWork,
+            mapper,
+            accessTokenGen,
+            refreshTokenGen,
+            tokenRepo.Object,
             crypto);
     }
 }

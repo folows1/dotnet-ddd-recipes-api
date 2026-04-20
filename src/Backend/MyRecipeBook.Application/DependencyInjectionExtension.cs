@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Application.Services.AutoMapper;
 using MyRecipeBook.Application.UseCases.Dashboard;
 using MyRecipeBook.Application.UseCases.Login.DoLogin;
+using MyRecipeBook.Application.UseCases.Login.ExternalLogin;
 using MyRecipeBook.Application.UseCases.Recipe.Delete;
 using MyRecipeBook.Application.UseCases.Recipe.Filter;
 using MyRecipeBook.Application.UseCases.Recipe.Generate;
@@ -11,6 +12,7 @@ using MyRecipeBook.Application.UseCases.Recipe.GetById;
 using MyRecipeBook.Application.UseCases.Recipe.Image;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Application.UseCases.Recipe.Update;
+using MyRecipeBook.Application.UseCases.Token.RefreshToken;
 using MyRecipeBook.Application.UseCases.User.ChangePassword;
 using MyRecipeBook.Application.UseCases.User.Delete.Delete;
 using MyRecipeBook.Application.UseCases.User.Delete.Request;
@@ -69,5 +71,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IAddUpdateImageCoverUseCase, AddUpdateImageCoverUseCase>();
         services.AddScoped<IRequestDeleteUserUseCase, RequestDeleteUserUseCase>();
         services.AddScoped<IDeleteUserAccountUseCase, DeleteUserAccountUseCase>();
+        services.AddScoped<IExternalLoginUseCase, ExternalLoginUseCase>();
+        services.AddScoped<IUseRefreshTokenUseCase, UseRefreshTokenUseCase>();
     }
 }

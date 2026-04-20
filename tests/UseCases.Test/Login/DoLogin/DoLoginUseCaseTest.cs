@@ -4,10 +4,13 @@ using CommonTestUtils.Repos;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Tokens;
 using FluentAssertions;
+using Moq;
 using MyRecipeBook.Application.UseCases.Login.DoLogin;
 using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Domain.Repos.RefreshToken;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
+using MyRecipeBook.Infra.Security.Tokens.Refresh;
 
 namespace UseCases.Test.Login.DoLogin;
 
@@ -47,11 +50,22 @@ public class DoLoginUseCaseTest
     {
         var pwdEncrypter = PasswordEncripterBuilder.Build();
         var repoBuilder = new UserReadOnlyRepoBuilder();
+        var refreshTokenGen = new RefreshTokenGenerator();
+        var tokenRepo = new Mock<ITokenRepo>();
+        tokenRepo.Setup(repo => repo.SaveNewRefreshToken(It.IsAny<MyRecipeBook.Domain.Entities.RefreshToken>()))
+            .Returns(Task.CompletedTask);
+        var unitOfWork = UnitOfWorkBuilder.Build();
         var accessTokenGen = JwtTokenGeneratorBuilder.Build();
 
         if (user is not null)
-            repoBuilder.GetByEmailAndPassword(user);
+            repoBuilder.GetByEmail(user);
 
-        return new DoLoginUseCase(repoBuilder.Build(), pwdEncrypter, accessTokenGen);
+        return new DoLoginUseCase(
+            repoBuilder.Build(),
+            pwdEncrypter,
+            refreshTokenGen,
+            tokenRepo.Object,
+            unitOfWork,
+            accessTokenGen);
     }
 }

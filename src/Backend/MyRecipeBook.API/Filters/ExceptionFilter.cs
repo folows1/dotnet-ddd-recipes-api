@@ -7,41 +7,26 @@ using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.API.Filters;
 
-public class ExceptionFilter(ILogger<ExceptionFilter> logger) : IExceptionFilter
+public class ExceptionFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
-        if (context.Exception is MyRecipeBookException)
-            HandleProjectException(context);
+        if (context.Exception is MyRecipeBookException myRecipeBookException)
+            HandleProjectException(myRecipeBookException, context);
         else
             ThrowUnknowException(context);
     }
 
-    private static void HandleProjectException(ExceptionContext ctx)
+    private static void HandleProjectException(MyRecipeBookException myRecipeBookException, ExceptionContext context)
     {
-        switch (ctx.Exception)
-        {
-            case InvalidLoginException:
-                ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                ctx.Result = new UnauthorizedObjectResult(new ResponseErrorJson(ctx.Exception.Message));
-                return;
-            case NotFoundException:
-                ctx.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                ctx.Result = new NotFoundObjectResult(new ResponseErrorJson(ctx.Exception.Message));
-                return;
-        }
-
-        if (ctx.Exception is not ErrorOnValidationException exception) return;
-
-        ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-        ctx.Result = new BadRequestObjectResult(new ResponseErrorJson(exception.ErrorMessages));
+        context.HttpContext.Response.StatusCode = (int)myRecipeBookException.GetStatusCode();
+        context.Result = new ObjectResult(new ResponseErrorJson(myRecipeBookException.GetErrorMessages()));
     }
 
-    private void ThrowUnknowException(ExceptionContext ctx)
+    private static void ThrowUnknowException(ExceptionContext context)
     {
-        logger.LogError(ctx.Exception, "Unknown exception occurred: {Message}", ctx.Exception.Message);
-
-        ctx.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        ctx.Result = new ObjectResult(new ResponseErrorJson("An unexpected error occurred."));
+        context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        // 500
+        context.Result = new ObjectResult(new ResponseErrorJson(ResourceMessagesException.TOKEN_INVALID));
     }
 }

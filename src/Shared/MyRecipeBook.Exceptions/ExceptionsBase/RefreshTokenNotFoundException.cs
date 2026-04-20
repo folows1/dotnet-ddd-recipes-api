@@ -2,7 +2,7 @@ using System.Net;
 
 namespace MyRecipeBook.Exceptions.ExceptionsBase;
 
-public class InvalidLoginException() : MyRecipeBookException(ResourceMessagesException.INVALID_LOGIN)
+public class RefreshTokenNotFoundException() : MyRecipeBookException(ResourceMessagesException.TOKEN_MISSING)
 {
     public override IList<string> GetErrorMessages() => [Message];
 

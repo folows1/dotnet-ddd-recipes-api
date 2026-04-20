@@ -54,9 +54,9 @@ public class UpdateRecipeUseCaseTest
         var act = async () => await useCase.Execute(recipe.Id, request);
 
         (await act.Should().ThrowAsync<ErrorOnValidationException>())
-            .Where(e => e.ErrorMessages.Count == 1
+            .Where(e => e.GetErrorMessages().Count == 1
                         &&
-                        e.ErrorMessages.Contains(ResourceMessagesException.TITLE_EMPTY)
+                        e.GetErrorMessages().Contains(ResourceMessagesException.TITLE_EMPTY)
             );
     }
 

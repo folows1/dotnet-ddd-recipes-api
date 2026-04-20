@@ -9,6 +9,7 @@ using MyRecipeBook.Domain.Enums;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repos;
 using MyRecipeBook.Domain.Repos.Recipe;
+using MyRecipeBook.Domain.Repos.RefreshToken;
 using MyRecipeBook.Domain.Repos.User;
 using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
@@ -23,6 +24,7 @@ using MyRecipeBook.Infra.Extensions;
 using MyRecipeBook.Infra.Security.Crypto;
 using MyRecipeBook.Infra.Security.Tokens.Access.Generator;
 using MyRecipeBook.Infra.Security.Tokens.Access.Validator;
+using MyRecipeBook.Infra.Security.Tokens.Refresh;
 using MyRecipeBook.Infra.Services;
 using MyRecipeBook.Infra.Services.OpenAI;
 using MyRecipeBook.Infra.Services.ServiceBus;
@@ -35,7 +37,7 @@ public static class DependencyInjectionExtension
 {
     public static void AddInfra(this IServiceCollection services, IConfiguration cfg)
     {
-        AddPwdEncripter(services, cfg);
+        AddPwdEncripter(services);
         AddRepositories(services);
         AddLoggedUser(services);
         AddTokens(services, cfg);
@@ -91,6 +93,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IRecipeWriteOnlyRepo, RecipeRepo>();
         services.AddScoped<IRecipeReadOnlyRepo, RecipeRepo>();
         services.AddScoped<IRecipeUpdateOnlyRepo, RecipeRepo>();
+        services.AddScoped<ITokenRepo, TokenRepo>();
     }
 
     private static void AddFluentMigrator_SqlServer(IServiceCollection services, IConfiguration cfg)
@@ -113,6 +116,7 @@ public static class DependencyInjectionExtension
 
         services.AddScoped<IAccessTokenGenerator>(_ => new JwtTokenGenerator(expirationTimeMinutes, signingKey!));
         services.AddScoped<IAccessTokenValidator>(_ => new JwtTokenValidator(signingKey!));
+        services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
     }
 
     private static void AddLoggedUser(IServiceCollection services)
@@ -120,11 +124,13 @@ public static class DependencyInjectionExtension
         services.AddScoped<ILoggedUser, LoggedUser>();
     }
 
-    private static void AddPwdEncripter(IServiceCollection services, IConfiguration cfg)
+    private static void AddPwdEncripter(IServiceCollection services)
     {
-        var key = cfg.GetValue<string>("Settings:Password:AdditionalKey");
+        // var key = cfg.GetValue<string>("Settings:Password:AdditionalKey");
 
-        services.AddScoped<IPasswordEncripter>(_ => new Sha512Encripter(key!));
+        // services.AddScoped<IPasswordEncripter>(_ => new Sha512Encripter(key!));
+
+        services.AddScoped<IPasswordEncripter, BCryptNet>();
     }
 
     private static void AddOpenAi(IServiceCollection svc, IConfiguration cfg)
